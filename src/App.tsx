@@ -3,7 +3,6 @@ import AppLayout from "./components/AppLayout";
 import ProtectedLayout from "./pages/ProtectedLayout";
 import { Routes, Route } from "react-router";
 import HomePage from "./pages/HomePage";
-import TaskPage from "./components/TaskComponent";
 import TaskForm from "./components/TaskForm";
 import { ToastContainer } from "react-toastify";
 import LoginPage from "./pages/LoginPage";

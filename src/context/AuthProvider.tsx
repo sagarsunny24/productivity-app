@@ -12,6 +12,7 @@ export function AuthProvider({ children }: ComponentProps) {
   // const AuthContext = createContext<AuthState |null>(null)
   const [accessToken, setAccessToken] = useState<string>("");
   const [isLoading, setLoading] = useState<boolean>(true);
+  const [searchQuery,setSearchQuery] = useState<string>("")
   const accessTokenRef = useRef<string>("");
   function setAccessTokenSafe(token: string) {
     accessTokenRef.current = token;
@@ -75,7 +76,7 @@ export function AuthProvider({ children }: ComponentProps) {
   }, []);
   return (
     <AuthContext.Provider
-      value={{ accessToken, isLoading, login, logout, register }}
+      value={{ accessToken, isLoading, login, logout, register,setSearchQuery,searchQuery }}
     >
       {children}
     </AuthContext.Provider>

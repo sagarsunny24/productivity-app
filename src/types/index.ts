@@ -14,6 +14,7 @@ export type TaskProps = {
 export type TaskPropsChildren ={
   tasks: Task[],
   heading?:string
+  show?:boolean
 }
 
 export interface Credential {
@@ -27,6 +28,8 @@ export type AuthState = {
   login: (credentials:Credential)=> Promise<number| true>,
   logout: ()=>void,
   register: (credentials:Credential)=> Promise<number | true>,
+  searchQuery:string,
+  setSearchQuery:(searchQuery:string)=>void
 }
 
 export type TasksResponse = Task[]
@@ -39,3 +42,12 @@ export interface ApiResponse {
 }
 export type UpdateTaskParams = Task
 
+export interface CountObject {
+  allCount: number,
+  upCount:number,
+  todayCount:number,
+  completedCount:number,
+  perCount:number,
+  workCount:number,
+  otherCount:number
+}

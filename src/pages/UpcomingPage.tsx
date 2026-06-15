@@ -41,11 +41,11 @@ export default function UpcomingPage() {
     <>
     <Box sx={{display:'flex', gap:10, flexDirection:'column'}}>
    
-    <TaskPage tasks={thisWeekTasks ?? []} heading="This Week" />
+    <TaskPage tasks={thisWeekTasks ?? []} heading="This Week" show={true}/>
 
-    <TaskPage tasks={nextWeekTasks ?? []} heading="Next Week" />
+    <TaskPage tasks={nextWeekTasks ?? []} heading="Next Week" show={false} />
    
-    <TaskPage tasks={thisMonthTasks ?? []} heading="Coming month" />
+    <TaskPage tasks={thisMonthTasks ?? []} heading="Coming month"  show={false}/>
     </Box>
     </>
   )

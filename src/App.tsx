@@ -9,6 +9,9 @@ import { ToastContainer } from "react-toastify";
 import LoginPage from "./pages/LoginPage";
 import AllPage from "./pages/AllPage";
 import UpcomingPage from "./pages/UpcomingPage";
+import TodayPage from "./pages/TodayPage";
+import CompletedPage from "./pages/CompletedPage";
+import CategoryPage from "./pages/CategoryPage";
 const theme = createTheme({
   typography: {
     fontFamily: "Roboto, Arial, sans-serif",
@@ -46,13 +49,21 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route element={<ProtectedLayout />}>
           <Route path="/dashboard" element={<AppLayout />}>
-          <Route index element={<AllPage />} />
-          <Route path="/dashboard/upcoming" element={<UpcomingPage />} />
+            <Route index element={<AllPage />} />
+            <Route path="/dashboard/upcoming" element={<UpcomingPage />} />
+            <Route path="/dashboard/today" element={<TodayPage />} />
+            <Route path="/dashboard/completed" element={<CompletedPage/>} />
+             <Route path="/dashboard/personal" element={<CategoryPage category="personal"/>} />
+             <Route path="/dashboard/work" element={<CategoryPage category="work"/>} />
+             <Route path="/dashboard/other" element={<CategoryPage category="other"/>} />
             <Route path="/dashboard/add" element={<TaskForm edit={false} />} />
             <Route path="/dashboard/edit" element={<TaskForm edit={true} />} />
           </Route>
         </Route>
-        <Route path="*" element={<Typography>404 ERROR not found</Typography>} />
+        <Route
+          path="*"
+          element={<Typography>404 ERROR not found</Typography>}
+        />
       </Routes>
     </ThemeProvider>
   );

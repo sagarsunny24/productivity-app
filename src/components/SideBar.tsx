@@ -4,6 +4,7 @@ import UpcomingIcon from "@mui/icons-material/Upcoming";
 import TodayIcon from "@mui/icons-material/Today";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import Badge from '@mui/material/Badge';
 import AddTaskIcon from "@mui/icons-material/AddTask";
 import {
   Box,
@@ -28,6 +29,8 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { useNavigate,Link } from "react-router";
+import useTasks from "../hooks/useTasks";
+
 
 const drawerWidth = 240;
 
@@ -97,6 +100,7 @@ export default function SideBar({
 }: PropsWithChildren) {
   const navigate = useNavigate()
   const theme = useTheme();
+  const {counts} = useTasks()
   const [open, setOpen] = useState<boolean>(false);
   const [selected,setSelected] = useState<'all' | 'upcoming' | 'today' |'completed' |'calendar' |'personal'| 'work' | 'other'>('all')
 
@@ -167,6 +171,7 @@ export default function SideBar({
       >
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
+            
             {theme.direction === "ltr" ? (
               <ChevronLeftIcon />
             ) : (
@@ -213,7 +218,10 @@ export default function SideBar({
               <ListItemIcon>
                 <FormatListBulletedIcon />
               </ListItemIcon>
+              
+    
               <ListItemText primary={"All Tasks"} />
+              <Badge max={10} color="primary" badgeContent={counts.allCount} />
             </ListItemButton>
           </ListItem>
           <ListItem key={"upcoming"} disablePadding>
@@ -226,6 +234,7 @@ export default function SideBar({
                 <UpcomingIcon />
               </ListItemIcon>
               <ListItemText primary={"Upcoming"} />
+              <Badge color="primary" badgeContent={counts.upCount} />
             </ListItemButton>
           </ListItem>
           <ListItem key={"today"} disablePadding>
@@ -238,6 +247,7 @@ export default function SideBar({
                 <TodayIcon />
               </ListItemIcon>
               <ListItemText primary={"Today"} />
+              <Badge color="info" badgeContent={counts.todayCount} />
             </ListItemButton>
           </ListItem>
           <ListItem key={"completed"} disablePadding>
@@ -250,6 +260,7 @@ export default function SideBar({
                 <DoneAllIcon />
               </ListItemIcon>
               <ListItemText primary={"Completed"} />
+              <Badge color="secondary" badgeContent={counts.completedCount} />
             </ListItemButton>
           </ListItem>
           <ListItem key={"calender"} disablePadding>
@@ -282,11 +293,12 @@ export default function SideBar({
         </Typography>
         <List sx={{ marginTop: -3 }}>
           <ListItem key={"personal"} disablePadding>
+            
             <ListItemButton selected={selected === "personal"}
     onClick={() => {
       setSelected("personal");
        return navigate('/dashboard/personal')
-    }}>
+    }}><Badge color="error" badgeContent={counts.perCount} max={10}>
               <Chip
                 label="Personal"
                 variant="outlined"
@@ -306,14 +318,16 @@ export default function SideBar({
                   />
                 }
               />
+              </Badge>
             </ListItemButton>
+          
           </ListItem>
           <ListItem key={"work"} disablePadding>
             <ListItemButton selected={selected === "work"}
     onClick={() => {
       setSelected("work");
        return navigate('/dashboard/work')
-    }}>
+    }}><Badge color="success" badgeContent={counts.workCount} max={10}>
               <Chip
                 label="Work"
                 variant="outlined"
@@ -333,14 +347,15 @@ export default function SideBar({
                   />
                 }
               />
+             </Badge>
             </ListItemButton>
           </ListItem>
           <ListItem key={"other"} disablePadding>
             <ListItemButton selected={selected === "other"}
     onClick={() => {
-      setSelected("all");
+      setSelected("other");
        return navigate('/dashboard/other')
-    }}>
+    }}><Badge color="warning" badgeContent={counts.otherCount} max={10}>
               <Chip
                 label="Other"
                 variant="outlined"
@@ -360,6 +375,7 @@ export default function SideBar({
                   />
                 }
               />
+              </Badge>
             </ListItemButton>
           </ListItem>
         </List>

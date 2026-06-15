@@ -2,5 +2,5 @@ import TaskPage from "../components/TaskComponent";
 import useTasks from "../hooks/useTasks";
 export default function AllPage() {
   const { tasks } = useTasks();
-  return <TaskPage tasks={tasks ?? []} />;
+  return <TaskPage tasks={tasks ?? []} show={true}/>;
 }

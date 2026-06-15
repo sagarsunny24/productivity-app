@@ -17,15 +17,15 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 type ViewSetting = "board" | 'list'
 
-export default function TaskPage({tasks,heading} :TaskPropsChildren) {
-  const { fetchStatus } = useTasks();
-  const [taskView, setTaskView] = useState<ViewSetting>('list')
+export default function TaskPage({tasks,heading,show=true} :TaskPropsChildren) {
+  const { fetchStatus,isSearching } = useTasks();
+  const [taskView, setTaskView] = useState<ViewSetting>('board')
   const handleChange = (_:React.MouseEvent, newView:ViewSetting ) => {
     if (newView !== null) setTaskView(newView)
   };
   // const [addBtn, setAddBtn] = useState<boolean>(false)
 console.log(tasks)
-  if (fetchStatus === "fetching") {
+  if (fetchStatus === "fetching" || isSearching) {
     return (
       <Box
         sx={{
@@ -42,7 +42,7 @@ console.log(tasks)
   return (
     // <TaskItem />
     <Box>
-      <Accordion elevation={0}>
+      <Accordion elevation={0} defaultExpanded={show}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
       <Box  sx={{
       display: "flex",
@@ -66,9 +66,9 @@ console.log(tasks)
         }}>{heading??"Overview"}</Typography>
       
       </Box>
-     
+       </AccordionSummary>
+      <AccordionDetails>
       <Divider textAlign="left">
-       
  <ToggleButtonGroup
  size="small"
       color="primary"
@@ -82,7 +82,7 @@ console.log(tasks)
     </ToggleButtonGroup>
     
       </Divider>
-       </AccordionSummary>
+       
       {tasks.length ===0 ? (
         <EmptyTasks />
       ) : taskView==="board"? (
@@ -95,7 +95,7 @@ console.log(tasks)
         </Box>
       ) : <TaskList tasks={tasks} />
       }
-      
+      </AccordionDetails>
       </Accordion>
     </Box>
   );

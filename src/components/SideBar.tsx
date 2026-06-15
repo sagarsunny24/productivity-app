@@ -1,11 +1,13 @@
-import * as React from "react";
+import { type PropsWithChildren,useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import UpcomingIcon from "@mui/icons-material/Upcoming";
 import TodayIcon from "@mui/icons-material/Today";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import AddTaskIcon from "@mui/icons-material/AddTask";
 import {
   Box,
+  Button,
   Chip,
   Drawer,
   CssBaseline,
@@ -24,6 +26,8 @@ import SearchBar from "./SearchBar";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import { useNavigate,Link } from "react-router";
 
 const drawerWidth = 240;
 
@@ -88,11 +92,13 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-export default function PersistentDrawerLeft({
+export default function SideBar({
   children,
-}: React.PropsWithChildren) {
+}: PropsWithChildren) {
+  const navigate = useNavigate()
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [selected,setSelected] = useState<'all' | 'upcoming' | 'today' |'completed' |'calendar' |'personal'| 'work' | 'other'>('all')
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -106,7 +112,7 @@ export default function PersistentDrawerLeft({
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar>
+        <Toolbar sx={{display:'flex',justifyContent:'space-between'}}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -122,9 +128,29 @@ export default function PersistentDrawerLeft({
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Pro App
+            Productivity App
           </Typography>
+           <Link to="/dashboard/add" state={{from: location.pathname}}>
+        <Button  variant="contained"
+        startIcon={<AddTaskIcon />}
+        sx={{
+          color:'primary.main',
+          bgcolor:'secondary.main',
+          borderRadius: 2,
+          textTransform: "none",
+          fontWeight: 600,
+          px: 2,
+          py: 1,
+          boxShadow: "none",
+          "&:hover": {
+            boxShadow: 2,
+          },
+        }}>
+          <Typography variant="body2">Add new task</Typography>
+        </Button>
+      </Link>
         </Toolbar>
+       
       </AppBar>
       <Drawer
         sx={{
@@ -178,8 +204,24 @@ export default function PersistentDrawerLeft({
           TASKS
         </Typography>
         <List sx={{ marginTop: -3 }}>
+          <ListItem key={"all"} disablePadding>
+            <ListItemButton selected={selected === "all"}
+    onClick={() => {
+      setSelected("all");
+       return navigate('/dashboard')
+    }}>
+              <ListItemIcon>
+                <FormatListBulletedIcon />
+              </ListItemIcon>
+              <ListItemText primary={"All Tasks"} />
+            </ListItemButton>
+          </ListItem>
           <ListItem key={"upcoming"} disablePadding>
-            <ListItemButton>
+            <ListItemButton selected={selected === "upcoming"}
+    onClick={() => {
+      setSelected("upcoming");
+       return navigate('/dashboard/upcoming')
+    }}>
               <ListItemIcon>
                 <UpcomingIcon />
               </ListItemIcon>
@@ -187,7 +229,11 @@ export default function PersistentDrawerLeft({
             </ListItemButton>
           </ListItem>
           <ListItem key={"today"} disablePadding>
-            <ListItemButton>
+            <ListItemButton selected={selected === "today"}
+    onClick={() => {
+      setSelected("today");
+       return navigate('/dashboard/today')
+    }}>
               <ListItemIcon>
                 <TodayIcon />
               </ListItemIcon>
@@ -195,7 +241,11 @@ export default function PersistentDrawerLeft({
             </ListItemButton>
           </ListItem>
           <ListItem key={"completed"} disablePadding>
-            <ListItemButton>
+            <ListItemButton selected={selected === "completed"}
+    onClick={() => {
+      setSelected("completed");
+       return navigate('/dashboard/completed')
+    }}>
               <ListItemIcon>
                 <DoneAllIcon />
               </ListItemIcon>
@@ -203,7 +253,11 @@ export default function PersistentDrawerLeft({
             </ListItemButton>
           </ListItem>
           <ListItem key={"calender"} disablePadding>
-            <ListItemButton>
+            <ListItemButton selected={selected === "calendar"}
+    onClick={() => {
+      setSelected("calendar");
+       return navigate('/dashboard/calendar')
+    }}>
               <ListItemIcon>
                 <CalendarMonthIcon />
               </ListItemIcon>
@@ -228,7 +282,11 @@ export default function PersistentDrawerLeft({
         </Typography>
         <List sx={{ marginTop: -3 }}>
           <ListItem key={"personal"} disablePadding>
-            <ListItemButton>
+            <ListItemButton selected={selected === "personal"}
+    onClick={() => {
+      setSelected("personal");
+       return navigate('/dashboard/personal')
+    }}>
               <Chip
                 label="Personal"
                 variant="outlined"
@@ -251,7 +309,11 @@ export default function PersistentDrawerLeft({
             </ListItemButton>
           </ListItem>
           <ListItem key={"work"} disablePadding>
-            <ListItemButton>
+            <ListItemButton selected={selected === "work"}
+    onClick={() => {
+      setSelected("work");
+       return navigate('/dashboard/work')
+    }}>
               <Chip
                 label="Work"
                 variant="outlined"
@@ -274,7 +336,11 @@ export default function PersistentDrawerLeft({
             </ListItemButton>
           </ListItem>
           <ListItem key={"other"} disablePadding>
-            <ListItemButton>
+            <ListItemButton selected={selected === "other"}
+    onClick={() => {
+      setSelected("all");
+       return navigate('/dashboard/other')
+    }}>
               <Chip
                 label="Other"
                 variant="outlined"

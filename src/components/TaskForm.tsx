@@ -28,21 +28,24 @@ type Category = 'personal' | 'work' | 'other'
 export default function TaskForm({ edit }: FormProps) {
   const location = useLocation()
   const task = location.state?.task
-  const {onAdd} = useTasks()
+  const from = location.state?.from ?? '/dashboard'
+  console.log(task)
+  const {onAdd,onEdit} = useTasks()
   const [title, setTitle] = useState<string>(task?.title ?? '')
-  const [desc,setDesc] = useState<string | null>(task?.desc?? null)
-  const [dueDate, setDate] = useState<string| null>(task?.date ?? null)
+  const [description,setDesc] = useState<string | null>(task?.description ?? '')
+  const [dueDate, setDate] = useState<string| null>(task?.dueDate ?? null)
   const [priority, setPriority] = useState<Priority>(task?.priority ?? 'medium')
 const [category, setCategory] = useState<Category>(task?.category ?? 'personal')
 
   const navigate = useNavigate();
 
-  async function handleSubmit(){
+  async function handleSubmit(e:React.SubmitEvent<HTMLFormElement>){
+    e.preventDefault()
     if(!edit){
       const newTask = {
         taskId: crypto.randomUUID(),
         title,
-        desc,
+        description,
         dueDate,
         priority,
         category,
@@ -50,7 +53,7 @@ const [category, setCategory] = useState<Category>(task?.category ?? 'personal')
       }
       try{
        await onAdd(newTask as Task)
-       navigate('/dashboard')
+       navigate(from)
       }
       catch(err){
       //toast error here
@@ -71,15 +74,16 @@ const [category, setCategory] = useState<Category>(task?.category ?? 'personal')
     else{
      try{
       const updatedTask = {...task,title,
-        desc,
+        description,
         dueDate,
         priority,
-        category,}
-       const res = await onEdit(updatedTask)
-      navigate('/dashboard')
+        category}
+      await onEdit(updatedTask)
+      navigate(from)
       }
       catch(err){
       //toast error here
+      console.log(err)
       toast.error(`Error ${err} occured`, {
             position: "bottom-right",
             autoClose: 5000,
@@ -124,12 +128,12 @@ const [category, setCategory] = useState<Category>(task?.category ?? 'personal')
           sx={{ mb: 2 }}
         ></TextField>
         <TextField
+        required
           label="Description"
           placeholder="Eg: Add notes"
           fullWidth
-          multiline
-          rows={6}
-          value={desc}
+          rows={4}
+          value={description}
           onChange={(e)=>setDesc(e.target.value)}
           sx={{ mb: 2 }}
         ></TextField>
@@ -137,6 +141,7 @@ const [category, setCategory] = useState<Category>(task?.category ?? 'personal')
           <FormControl fullWidth>
             <InputLabel id="priority-id">Priority</InputLabel>
             <Select
+            required
               fullWidth
               label="Priority"
               labelId="priority-id"
@@ -152,6 +157,7 @@ const [category, setCategory] = useState<Category>(task?.category ?? 'personal')
           <FormControl fullWidth>
             <InputLabel id="category-id">Category</InputLabel>
             <Select
+            required
               fullWidth
               label="Category"
               labelId="category_id"
@@ -167,6 +173,7 @@ const [category, setCategory] = useState<Category>(task?.category ?? 'personal')
         </Box>
         <Box sx={{ display: "flex", gap: 2, justifyContent: "space-between" }}>
           <TextField
+          required
             slotProps={{ inputLabel: { shrink: true } }}
             label="Due Date"
             type="date"
@@ -175,7 +182,7 @@ const [category, setCategory] = useState<Category>(task?.category ?? 'personal')
             onChange={(e)=>setDate(e.target.value)}
           />
           <Box sx={{display:'flex',gap:2}}>
-            <Button sx={{alignSelf:'stretch'}} variant="outlined" onClick={()=> navigate('/dashboard/')}>Cancel</Button>
+            <Button sx={{alignSelf:'stretch'}} variant="outlined" onClick={()=> navigate(from)}>Cancel</Button>
 
             <Button sx={{alignSelf:'stretch'}} type="submit" variant="contained">
               {edit ? "Save Changes" : "Add Task"}

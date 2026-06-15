@@ -1,15 +1,14 @@
-import {
-  ThemeProvider,
-  createTheme,
-} from "@mui/material";
+import { ThemeProvider, Typography, createTheme } from "@mui/material";
 import AppLayout from "./components/AppLayout";
 import ProtectedLayout from "./pages/ProtectedLayout";
 import { Routes, Route } from "react-router";
 import HomePage from "./pages/HomePage";
-import TaskPage from "./pages/TaskPage";
+import TaskPage from "./components/TaskComponent";
 import TaskForm from "./components/TaskForm";
 import { ToastContainer } from "react-toastify";
 import LoginPage from "./pages/LoginPage";
+import AllPage from "./pages/AllPage";
+import UpcomingPage from "./pages/UpcomingPage";
 const theme = createTheme({
   typography: {
     fontFamily: "Roboto, Arial, sans-serif",
@@ -44,14 +43,16 @@ export default function App() {
       {/* <SideBar/> */}
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />}/>
+        <Route path="/login" element={<LoginPage />} />
         <Route element={<ProtectedLayout />}>
           <Route path="/dashboard" element={<AppLayout />}>
-            <Route index element={<TaskPage />} />
-            <Route path ='/dashboard/add' element={<TaskForm edit={false} />} />
-            <Route path ='/dashboard/edit' element={<TaskForm edit={true} />} />
+          <Route index element={<AllPage />} />
+          <Route path="/dashboard/upcoming" element={<UpcomingPage />} />
+            <Route path="/dashboard/add" element={<TaskForm edit={false} />} />
+            <Route path="/dashboard/edit" element={<TaskForm edit={true} />} />
           </Route>
         </Route>
+        <Route path="*" element={<Typography>404 ERROR not found</Typography>} />
       </Routes>
     </ThemeProvider>
   );

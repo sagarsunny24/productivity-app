@@ -1,75 +1,83 @@
 import type { Credential } from "../types/index";
-import { useState,useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AuthContext } from "./AuthContext";
-
+import { AxiosError } from "axios";
+import { api } from "../axios/api";
+import { setUpInterceptors } from "../axios/interceptors";
 interface ComponentProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
+export function AuthProvider({ children }: ComponentProps) {
+  // const AuthContext = createContext<AuthState |null>(null)
+  const [accessToken, setAccessToken] = useState<string>("");
+  const [isLoading, setLoading] = useState<boolean>(true);
+  const accessTokenRef = useRef<string>("");
+  function setAccessTokenSafe(token: string) {
+    accessTokenRef.current = token;
+    console.log("inside useRef", token);
+    setAccessToken(token);
+  }
 
-
-
-export function AuthProvider({children} :ComponentProps ){
-
-// const AuthContext = createContext<AuthState |null>(null)
-const [accessToken, setAccessToken] = useState<string>("");
-
-useEffect(()=>{
-  console.log("Inside useEffect",accessToken)
-},[accessToken]) // this is also not working
-  async function login({ username, password }:Credential) : Promise<number | true>{
+  // this is also not working
+  async function login({
+    username,
+    password,
+  }: Credential): Promise<number | true> {
     try {
-      const res = await fetch("http://localhost:3000/auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user: username, pwd: password }),
-      });
+      const res = await api.post(
+        "/auth",
+        {
+          user: username,
+          pwd: password,
+        },
+        { withCredentials: true },
+      );
 
-      if (!res.ok) {
-        setAccessToken('');
-        return res.status;
-        // if(res.status === 404){
-
-        // }
-      } else {
-        const data = await res.json();
-        console.log(data.accessToken); // this is working
-          setAccessToken(data.accessToken);
-          console.log(accessToken) // this is not working , i think some typescript issue is happening
-          localStorage.setItem("rtoken", data.refreshToken);
-        return true;
-      }
-    } catch (err) {
-      console.log(err)
-      return 500
+      setAccessTokenSafe(res.data.accessToken);
+      return true;
+    } catch (error) {
+      const err = error as AxiosError;
+      return err?.response?.status ?? 500;
     }
   }
   async function logout() {
-    setAccessToken('');
-    localStorage.removeItem('rtoken')
+    setAccessTokenSafe("");
+    localStorage.removeItem("rtoken");
   }
 
-  async function register({ username, password }:Credential) : Promise<number | true> {
+  async function register({
+    username,
+    password,
+  }: Credential): Promise<number | true> {
     try {
-      const res = await fetch("http://localhost:3000/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user: username, pwd: password }),
-      });
-      if (!res.ok) {
-        return res.status;
-      } else {
-        return true;
-      }
+      await api.post("/register", { user: username, pwd: password });
+      return true;
     } catch (error) {
-      console.log(error)
-      return 500;
+      const err = error as AxiosError;
+      return err?.response?.status ?? 500;
     }
   }
-  return(
-    <AuthContext.Provider value ={{accessToken,login,logout,register}}>
+
+  useEffect(() => {
+    const restoreSession = async () => {
+      try {
+        const res = await api.get("/refresh", { withCredentials: true });
+        setAccessTokenSafe(res.data.accessToken);
+      } catch {
+        setAccessTokenSafe("");
+      } finally {
+        setLoading(false);
+      }
+    };
+    restoreSession();
+    setUpInterceptors(() => accessTokenRef.current, setAccessTokenSafe);
+  }, []);
+  return (
+    <AuthContext.Provider
+      value={{ accessToken, isLoading, login, logout, register }}
+    >
       {children}
     </AuthContext.Provider>
-
-  )
+  );
 }

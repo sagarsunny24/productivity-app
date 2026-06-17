@@ -11,6 +11,7 @@ import UpcomingPage from "./pages/UpcomingPage";
 import TodayPage from "./pages/TodayPage";
 import CompletedPage from "./pages/CompletedPage";
 import CategoryPage from "./pages/CategoryPage";
+import Calendar from "./pages/CalendarPage";
 const theme = createTheme({
   typography: {
     fontFamily: "Roboto, Arial, sans-serif",
@@ -52,6 +53,7 @@ export default function App() {
             <Route path="/dashboard/upcoming" element={<UpcomingPage />} />
             <Route path="/dashboard/today" element={<TodayPage />} />
             <Route path="/dashboard/completed" element={<CompletedPage/>} />
+            <Route path="/dashboard/calendar" element={<Calendar />} />
              <Route path="/dashboard/personal" element={<CategoryPage category="personal"/>} />
              <Route path="/dashboard/work" element={<CategoryPage category="work"/>} />
              <Route path="/dashboard/other" element={<CategoryPage category="other"/>} />

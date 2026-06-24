@@ -6,6 +6,7 @@ import DoneAllIcon from "@mui/icons-material/DoneAll";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import Badge from '@mui/material/Badge';
 import AddTaskIcon from "@mui/icons-material/AddTask";
+import BarChartIcon from '@mui/icons-material/BarChart';
 import {
   Box,
   Button,
@@ -31,7 +32,15 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { useNavigate,Link } from "react-router";
 import useTasks from "../hooks/useTasks";
 
-
+const categoryColors: Record<string, string> = {
+  personal:  'error.main',
+  work:      'success.main',
+  health:    'info.main',
+  finance:   'warning.main',
+  learning:  'secondary.main',
+  social:    'primary.main',
+  other:     'text.secondary',
+};
 const drawerWidth = 240;
 
 interface MainProps {
@@ -102,7 +111,7 @@ export default function SideBar({
   const theme = useTheme();
   const {counts} = useTasks()
   const [open, setOpen] = useState<boolean>(false);
-  const [selected,setSelected] = useState<'all' | 'upcoming' | 'today' |'completed' |'calendar' |'personal'| 'work' | 'other'>('all')
+  const [selected,setSelected] = useState<'all' | 'upcoming' | 'today' |'completed' |'calendar' |'personal'| 'work' | 'other' | 'dashboard' |'finance' | 'social' | 'health' | 'learning'>('all')
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -275,6 +284,18 @@ export default function SideBar({
               <ListItemText primary={"Calendar"} />
             </ListItemButton>
           </ListItem>
+           <ListItem key={"charts"} disablePadding>
+            <ListItemButton selected={selected === "dashboard"}
+    onClick={() => {
+      setSelected("dashboard");
+       return navigate('/dashboard/charts')
+    }}>
+              <ListItemIcon>
+                <BarChartIcon/>
+              </ListItemIcon>
+              <ListItemText primary={"Dashboard"} />
+            </ListItemButton>
+          </ListItem>
         </List>
         <Divider />
         <Typography
@@ -298,7 +319,7 @@ export default function SideBar({
     onClick={() => {
       setSelected("personal");
        return navigate('/dashboard/personal')
-    }}><Badge color="error" badgeContent={counts.perCount} max={10}>
+    }}><Badge color="error" badgeContent={counts.personal.count - counts.personal.completed} max={10}>
               <Chip
                 label="Personal"
                 variant="outlined"
@@ -313,7 +334,7 @@ export default function SideBar({
                       width: 10,
                       height: 10,
                       borderRadius: "50%",
-                      bgcolor: "error.main",
+                      bgcolor: categoryColors.personal,
                     }}
                   />
                 }
@@ -327,7 +348,7 @@ export default function SideBar({
     onClick={() => {
       setSelected("work");
        return navigate('/dashboard/work')
-    }}><Badge color="success" badgeContent={counts.workCount} max={10}>
+    }}><Badge color="success" badgeContent={counts.work.count-counts.work.completed} max={10}>
               <Chip
                 label="Work"
                 variant="outlined"
@@ -342,7 +363,7 @@ export default function SideBar({
                       width: 10,
                       height: 10,
                       borderRadius: "50%",
-                      bgcolor: "success.main",
+                      bgcolor: categoryColors.work,
                     }}
                   />
                 }
@@ -350,12 +371,124 @@ export default function SideBar({
              </Badge>
             </ListItemButton>
           </ListItem>
-          <ListItem key={"other"} disablePadding>
+          <ListItem key={"health"} disablePadding>
+            <ListItemButton selected={selected === "health"}
+    onClick={() => {
+      setSelected("health");
+       return navigate('/dashboard/health')
+    }}><Badge color="info" badgeContent={counts.health.count - counts.health.completed} max={10}>
+              <Chip
+                label="Health"
+                variant="outlined"
+                sx={{
+                  width: 120,
+                  justifyContent: "flex-start",
+                  fontWeight: 500,
+                }}
+                icon={
+                  <Box
+                    sx={{
+                      width: 10,
+                      height: 10,
+                      borderRadius: "50%",
+                      bgcolor: categoryColors.health,
+                    }}
+                  />
+                }
+              />
+              </Badge>
+            </ListItemButton>
+          </ListItem>
+           <ListItem key={"finance"} disablePadding>
+            <ListItemButton selected={selected === "finance"}
+    onClick={() => {
+      setSelected("finance");
+       return navigate('/dashboard/finance')
+    }}><Badge color="warning" badgeContent={counts.finance.count - counts.finance.completed} max={10}>
+              <Chip
+                label="Finance"
+                variant="outlined"
+                sx={{
+                  width: 120,
+                  justifyContent: "flex-start",
+                  fontWeight: 500,
+                }}
+                icon={
+                  <Box
+                    sx={{
+                      width: 10,
+                      height: 10,
+                      borderRadius: "50%",
+                      bgcolor: categoryColors.finance,
+                    }}
+                  />
+                }
+              />
+              </Badge>
+            </ListItemButton>
+          </ListItem>
+           <ListItem key={"learning"} disablePadding>
+            <ListItemButton selected={selected === "learning"}
+    onClick={() => {
+      setSelected("learning");
+       return navigate('/dashboard/learning')
+    }}><Badge color="secondary" badgeContent={counts.learning.count - counts.learning.completed} max={10}>
+              <Chip
+                label="Learning"
+                variant="outlined"
+                sx={{
+                  width: 120,
+                  justifyContent: "flex-start",
+                  fontWeight: 500,
+                }}
+                icon={
+                  <Box
+                    sx={{
+                      width: 10,
+                      height: 10,
+                      borderRadius: "50%",
+                      bgcolor: categoryColors.learning,
+                    }}
+                  />
+                }
+              />
+              </Badge>
+            </ListItemButton>
+          </ListItem>
+           <ListItem key={"social"} disablePadding>
+            <ListItemButton selected={selected === "social"}
+    onClick={() => {
+      setSelected("social");
+       return navigate('/dashboard/social')
+    }}><Badge color="success" badgeContent={counts.social.count - counts.social.completed} max={10}>
+              <Chip
+                label="Social"
+                variant="outlined"
+                sx={{
+                  width: 120,
+                  justifyContent: "flex-start",
+                  fontWeight: 500,
+                }}
+                icon={
+                  <Box
+                    sx={{
+                      width: 10,
+                      height: 10,
+                      borderRadius: "50%",
+                      bgcolor: categoryColors.social,
+                    }}
+                  />
+                }
+              />
+              </Badge>
+            </ListItemButton>
+          </ListItem>
+           <ListItem key={"other"} disablePadding>
             <ListItemButton selected={selected === "other"}
     onClick={() => {
       setSelected("other");
        return navigate('/dashboard/other')
-    }}><Badge color="warning" badgeContent={counts.otherCount} max={10}>
+    }}><Badge color="primary" badgeContent={counts.other.count - counts.other.completed} max={10}>
               <Chip
                 label="Other"
                 variant="outlined"
@@ -370,7 +503,7 @@ export default function SideBar({
                       width: 10,
                       height: 10,
                       borderRadius: "50%",
-                      bgcolor: "warning.main",
+                      bgcolor: categoryColors.other,
                     }}
                   />
                 }

@@ -152,6 +152,7 @@ const [category, setCategory] = useState<Category>(task?.category ?? 'personal')
               <MenuItem value="low">Low</MenuItem>
               <MenuItem value="medium">Medium</MenuItem>
               <MenuItem value="high">High</MenuItem>
+              <MenuItem value="urgent">Urgent</MenuItem>
             </Select>
           </FormControl>
           <FormControl fullWidth>
@@ -166,7 +167,11 @@ const [category, setCategory] = useState<Category>(task?.category ?? 'personal')
               sx={{ mb: 2 }}
             >
               <MenuItem value="personal">Personal</MenuItem>
-              <MenuItem value="work">Work</MenuItem>
+               <MenuItem value="work">Work</MenuItem>
+              <MenuItem value="social">Social</MenuItem>
+              <MenuItem value="health">Health</MenuItem>
+              <MenuItem value="finance">Finance</MenuItem>
+              <MenuItem value="learning">Learning</MenuItem>
               <MenuItem value="other">Other</MenuItem>
             </Select>
           </FormControl>

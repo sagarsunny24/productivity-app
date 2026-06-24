@@ -12,6 +12,7 @@ import TodayPage from "./pages/TodayPage";
 import CompletedPage from "./pages/CompletedPage";
 import CategoryPage from "./pages/CategoryPage";
 import Calendar from "./pages/CalendarPage";
+import ChartsPage from "./pages/ChartsPage";
 const theme = createTheme({
   typography: {
     fontFamily: "Roboto, Arial, sans-serif",
@@ -56,7 +57,12 @@ export default function App() {
             <Route path="/dashboard/calendar" element={<Calendar />} />
              <Route path="/dashboard/personal" element={<CategoryPage category="personal"/>} />
              <Route path="/dashboard/work" element={<CategoryPage category="work"/>} />
+             <Route path="/dashboard/health" element={<CategoryPage category="health"/>} />
+             <Route path="/dashboard/finance" element={<CategoryPage category="finance"/>} />
+             <Route path="/dashboard/social" element={<CategoryPage category="social"/>} />
+             <Route path="/dashboard/learning" element={<CategoryPage category="learning"/>} />
              <Route path="/dashboard/other" element={<CategoryPage category="other"/>} />
+             <Route path="/dashboard/charts" element ={<ChartsPage />} />
             <Route path="/dashboard/add" element={<TaskForm edit={false} />} />
             <Route path="/dashboard/edit" element={<TaskForm edit={true} />} />
           </Route>

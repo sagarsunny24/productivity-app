@@ -16,6 +16,23 @@ import EditIcon from "@mui/icons-material/Edit";
 import useTasks from "../hooks/useTasks";
 import type { TaskPropsChildren } from "../types";
 import { useNavigate } from "react-router";
+
+const categoryColors: Record<string, string> = {
+  personal:  'error.main',
+  work:      'success.main',
+  health:    'info.main',
+  finance:   'warning.main',
+  learning:  'secondary.main',
+  social:    'primary.main',
+  other:     'text.secondary',
+};
+const priorityColors = {
+  low:    'success',
+  medium: 'warning',
+  high:   'error',
+  urgent: 'secondary',
+} as const;
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.primary.main,
@@ -88,26 +105,19 @@ export default function TaskList({ tasks} :TaskPropsChildren) {
                 <Chip
                   label={task.priority}
                   color={
-                    task.priority === "high"
-                      ? "error"
-                      : task.priority === "medium"
-                        ? "warning"
-                        : "success"
+                    priorityColors[task.priority]
                   }
                 />
               </StyledTableCell>
                 <StyledTableCell>
-                <Chip
-                variant="outlined"
-                  label={task.category}
-                  color={
-                    task.category === "personal"
-                      ? "error"
-                      : task.category === "work"
-                        ? "warning"
-                        : "success"
-                  }
-                />
+               <Chip
+  label={task.category}
+  variant="outlined"
+  sx={{
+    borderColor: categoryColors[task.category],
+    color: categoryColors[task.category],
+  }}
+/>
               </StyledTableCell>
               <StyledTableCell>{task.dueDate?task.dueDate: "--"}</StyledTableCell>
               <StyledTableCell>

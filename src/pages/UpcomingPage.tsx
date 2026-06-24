@@ -16,7 +16,7 @@ export default function UpcomingPage() {
 
 
   const thisWeekTasks = tasks?.filter((t)=>{
-    console.log(t.dueDate) // 2026-06-24
+    // 2026-06-24
     return isWithinInterval(new Date(parseISO(t.dueDate)),{
       start:startOfWeek(new Date(),{weekStartsOn:1}),
       end: endOfWeek(new Date(), {weekStartsOn: 1})
@@ -24,14 +24,14 @@ export default function UpcomingPage() {
   })
   const nextWeek = addWeeks(new Date(), 1)
   const nextWeekTasks = tasks?.filter((t)=>{
-    console.log(t.dueDate) // 2026-06-24
+     // 2026-06-24
     return isWithinInterval(new Date(parseISO(t.dueDate)),{
       start:startOfWeek(nextWeek,{weekStartsOn:1}),
       end: endOfWeek(nextWeek, {weekStartsOn: 1})
     })
   })
   const thisMonthTasks = tasks?.filter((t)=>{
-    console.log(t.dueDate) // 2026-06-24
+    // 2026-06-24
     return isWithinInterval(new Date(parseISO(t.dueDate)),{
       start:startOfMonth(new Date()),
       end: endOfMonth(new Date())

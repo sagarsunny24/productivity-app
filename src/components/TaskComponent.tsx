@@ -3,7 +3,7 @@ import TaskItem from "./TaskBoard";
 import useTasks from "../hooks/useTasks";
 import EmptyTasks from "../pages/EmptyTasks";
 
-import { Accordion, AccordionSummary, AccordionDetails, Box, Divider, Typography } from "@mui/material";
+import { Accordion, AccordionSummary, AccordionDetails, Box, Divider, Typography, } from "@mui/material";
 import { type Task ,type TaskPropsChildren} from "../types";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
@@ -12,6 +12,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import GridViewIcon from '@mui/icons-material/GridView';
+
 // import { useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -24,7 +25,6 @@ export default function TaskPage({tasks,heading,show=true} :TaskPropsChildren) {
     if (newView !== null) setTaskView(newView)
   };
   // const [addBtn, setAddBtn] = useState<boolean>(false)
-console.log(tasks)
   if (fetchStatus === "fetching" || isSearching) {
     return (
       <Box
@@ -42,6 +42,7 @@ console.log(tasks)
   return (
     // <TaskItem />
     <Box>
+     
       <Accordion elevation={0} defaultExpanded={show}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
       <Box  sx={{

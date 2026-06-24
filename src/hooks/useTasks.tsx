@@ -139,15 +139,75 @@ export default function useTasks() {
   //   otherCount: otherTasks?.length ?? 0,
   // };
 
+  function calculateCount(data:Task[]){
   const counts :CountObject = (data ?? []).reduce(
     (acc,t) =>{
       const due = parseISO(t.dueDate)
+      const monthIndex = due.getMonth()
+      acc.months[monthIndex]  += 1
       acc.allCount +=1
       if(t.completed) acc.completedCount+=1
-      if(t.category === 'personal') acc.perCount +=1
-       if(t.category === 'work') acc.workCount +=1
-       if(t.category === 'other') acc.otherCount +=1
-       if(isToday(due)) acc.todayCount +=1
+      if(t.category === 'personal'){
+        acc.personal.count +=1
+        if(t.completed === true) acc.personal.completed +=1
+         if(t.priority === 'urgent') acc.personal.urgent+=1
+        if(t.priority === 'high') acc.personal.high +=1
+        if(t.priority === 'medium') acc.personal.medium +=1
+        if(t.priority === 'low') acc.personal.low +=1
+      } 
+    
+       if(t.category === 'work') {
+        acc.work.count +=1
+        if(t.completed === true) acc.work.completed +=1
+         if(t.priority === 'urgent') acc.work.urgent +=1
+        if(t.priority === 'high') acc.work.high +=1
+        if(t.priority === 'medium') acc.work.medium +=1
+        if(t.priority === 'low') acc.work.low +=1
+       }
+       if(t.category === 'other') {
+        acc.other.count +=1
+        if(t.completed ===true) acc.other.completed +=1
+          if(t.priority === 'urgent') acc.other.urgent +=1
+        if(t.priority === 'high') acc.other.high +=1
+        if(t.priority === 'medium') acc.other.medium +=1
+        if(t.priority === 'low') acc.other.low +=1
+               }
+                if(t.category === 'social') {
+        acc.social.count +=1
+        if(t.completed ===true) acc.social.completed +=1
+        if(t.priority === 'urgent') acc.social.urgent +=1
+        if(t.priority === 'high') acc.social.high +=1
+        if(t.priority === 'medium') acc.social.medium +=1
+        if(t.priority === 'low') acc.social.low +=1
+               }
+                if(t.category === 'learning') {
+        acc.learning.count +=1
+        if(t.completed ===true) acc.learning.completed +=1
+        if(t.priority === 'urgent') acc.learning.urgent +=1
+        if(t.priority === 'high') acc.learning.high +=1
+        if(t.priority === 'medium') acc.learning.medium +=1
+        if(t.priority === 'low') acc.learning.low +=1
+               }
+                if(t.category === 'finance') {
+        acc.finance.count +=1
+        if(t.completed ===true) acc.finance.completed +=1
+        if(t.priority === 'urgent') acc.finance.urgent +=1
+        if(t.priority === 'high') acc.finance.high +=1
+        if(t.priority === 'medium') acc.finance.medium +=1
+        if(t.priority === 'low') acc.finance.low +=1
+               }
+                if(t.category === 'health') {
+        acc.health.count +=1
+        if(t.completed ===true) acc.health.completed +=1
+        if(t.priority === 'urgent') acc.health.urgent +=1
+        if(t.priority === 'high') acc.health.high +=1
+        if(t.priority === 'medium') acc.health.medium +=1
+        if(t.priority === 'low') acc.health.low +=1
+               }
+       if(isToday(due)) {
+        acc.todayCount +=1
+        if(t.completed === true) acc.todayCompleted +=1
+      }
        if(isWithinInterval(new Date(parseISO(t.dueDate)), {
       start: startOfMonth(new Date()),
       end: endOfMonth(new Date()),
@@ -158,13 +218,76 @@ export default function useTasks() {
      allCount: 0,
     upCount: 0,
     todayCount: 0,
+    todayCompleted: 0,
     completedCount:0,
-    perCount: 0,
-    workCount: 0,
-    otherCount: 0,
+   personal:{
+   count:0,
+      completed:0,
+      urgent:0,
+      high:0,
+      medium:0,
+      low:0
+   },
+    
+    work:{
+      count:0,
+      completed:0,
+      urgent:0,
+      high:0,
+      medium:0,
+      low:0
+     
+    },
+    other:{
+      count:0,
+      completed:0,
+      urgent:0,
+      high:0,
+      medium:0,
+      low:0
+    },
+    social:{
+      count:0,
+      completed:0,
+      urgent:0,
+      high:0,
+      medium:0,
+      low:0
+    },
+    health:{
+count:0,
+      completed:0,
+      urgent:0,
+      high:0,
+      medium:0,
+      low:0
+    },
+    finance:{
+      count:0,
+      completed:0,
+      urgent:0,
+      high:0,
+      medium:0,
+      low:0
+    },
+    learning:{
+ count:0,
+      completed:0,
+      urgent:0,
+      high:0,
+      medium:0,
+      low:0
+    },
+   
+   
+   
+    months: Array(12).fill(0)
     }
-  ) 
+  )
+  return counts 
+  }
 
+const counts = calculateCount(data ?? [])
 
   const tasks = filteredTasks;
 
@@ -177,5 +300,6 @@ export default function useTasks() {
     onDelete,
     onToggle,
     counts,
+    calculateCount
   };
 }

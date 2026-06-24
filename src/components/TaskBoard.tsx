@@ -18,6 +18,22 @@ import { pink } from "@mui/material/colors";
 import type { TaskProps } from "../types";
 import useTasks from "../hooks/useTasks";
 
+const categoryColors: Record<string, string> = {
+  personal:  'error.main',
+  work:      'success.main',
+  health:    'info.main',
+  finance:   'warning.main',
+  learning:  'secondary.main',
+  social:    'primary.main',
+  other:     'text.secondary',
+};
+const priorityColors = {
+  low:    'success',
+  medium: 'warning',
+  high:   'error',
+  urgent: 'secondary',
+} as const;
+
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router";
 export default function TaskItem({ task }: TaskProps) {
@@ -33,13 +49,13 @@ export default function TaskItem({ task }: TaskProps) {
 
   return (
     <Box sx={{ m: 1, p: 1 }}>
-      <Card key={task.taskId} sx={{ maxWidth: 275,
+      <Card key={task.taskId} sx={{  maxWidth: 275,
        opacity:task.completed? 0.5 :1
        }}>
         <CardContent sx={{}}>
           <Typography
             gutterBottom
-            sx={{ color: task.category==='personal'? "error.main":task.category==='work'?'success.main':'warning.main', fontSize: 14 }}
+            sx={{ color: categoryColors[task.category], fontSize: 14 }}
           >
             {task.category.toUpperCase()}
           </Typography>
@@ -90,11 +106,7 @@ export default function TaskItem({ task }: TaskProps) {
             size="small"
             sx={{ fontSize: "0.7rem", height: 24 }}
             color={
-              task.priority === "high"
-                ? "error"
-                : task.priority === "medium"
-                  ? "warning"
-                  : "success"
+              priorityColors[task.priority]
             }
           />
         </CardActions>

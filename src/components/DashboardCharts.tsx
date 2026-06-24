@@ -381,7 +381,7 @@ export function FullPieComponent(): React.ReactElement {
     });
   const [view, setView] = useState<ViewType>("class");
   const handleViewChange = (
-    event: React.MouseEvent<HTMLElement>,
+    _: React.MouseEvent<HTMLElement>,
     newView: ViewType | null,
   ) => {
     if (newView !== null) {

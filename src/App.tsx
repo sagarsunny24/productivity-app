@@ -13,33 +13,67 @@ import CompletedPage from "./pages/CompletedPage";
 import CategoryPage from "./pages/CategoryPage";
 import Calendar from "./pages/CalendarPage";
 import ChartsPage from "./pages/ChartsPage";
+// const theme = createTheme({
+//   typography: {
+//     fontFamily: "Roboto, Arial, sans-serif",
+//   },
+//   palette: {
+//     mode: "light",
+//     primary: {
+//       main: "#0d0d0d",
+//       light: "#2c2c2c",
+//     },
+
+//     secondary: {
+//       main: "#e0e0e0",
+//       light: "#f5f5f5",
+//     },
+//     background: {
+//       default: "#f5f5f5",
+//       paper: "#ffffff",
+//     },
+//     text: {
+//       primary: "#0d0d0d",
+//       secondary: "#5a5a5a",
+//     },
+//     divider: "#e0e0e0",
+//   },
+// });
 const theme = createTheme({
-  typography: {
-    fontFamily: "Roboto, Arial, sans-serif",
-  },
+
+ 
+
   palette: {
     mode: "light",
+
     primary: {
-      main: "#0d0d0d",
-      light: "#2c2c2c",
+      main: "#6366F1", // Indigo
+      light: "#818CF8",
+      dark: "#4F46E5",
     },
 
     secondary: {
-      main: "#e0e0e0",
-      light: "#f5f5f5",
+      main: "#f7f7f7", // Teal
+      light: "#5EEAD4",
+      dark: "#0F766E",
     },
-    background: {
-      default: "#f5f5f5",
-      paper: "#ffffff",
-    },
-    text: {
-      primary: "#0d0d0d",
-      secondary: "#5a5a5a",
-    },
-    divider: "#e0e0e0",
-  },
-});
 
+    background: {
+      default: "#F8FAFC",
+      paper: "#FFFFFF",
+    },
+
+    text: {
+      primary: "#0F172A",
+      secondary: "#64748B",
+    },
+
+    divider: "#E2E8F0",
+  },
+
+ 
+
+});
 export default function App() {
   return (
     <ThemeProvider theme={theme}>

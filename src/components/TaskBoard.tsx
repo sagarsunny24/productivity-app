@@ -23,7 +23,7 @@ const categoryColors: Record<string, string> = {
   work:      'success.main',
   health:    'info.main',
   finance:   'warning.main',
-  learning:  'secondary.main',
+  learning:  'primary.light',
   social:    'primary.main',
   other:     'text.secondary',
 };

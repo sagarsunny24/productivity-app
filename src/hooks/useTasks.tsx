@@ -27,22 +27,38 @@ export default function useTasks() {
   const searchQuery = auth?.searchQuery;
   async function onFetch() {
     console.log("Inside Fetching", token);
-    const res = await api.get<TasksResponse>("/api/tasks/show");
-
-    return res.data ?? [];
+    const res = await api.post<TasksResponse>("/graphql",{
+      query: `query {tasks {
+       taskId
+    title
+    description
+    dueDate
+    completed
+    priority
+    category}}`
+    });
+    console.log(res)
+    return res.data.data.tasks ?? [];
   }
 
-  const { data, fetchStatus } = useQuery<TasksResponse>({
+  const { data, fetchStatus } = useQuery<Task[]>({
     queryKey: ["tasks"],
     queryFn: onFetch,
     refetchOnWindowFocus: false,
   });
 
-  const { mutateAsync: onAdd } = useMutation<ApiResponse, Error, Task>({
+  const { mutateAsync: onAdd } = useMutation<Task, Error, Task>({
     mutationFn: async (newTask) => {
       console.log("Inside adding", token);
-      const res = await api.post<ApiResponse>("/api/tasks/add", newTask);
-      return res.data;
+      const res = await api.post<Task>("/graphql", {
+          query: 
+          `mutation AddTask($input:AddTaskInput!){
+          addTask(input: $input){
+          title taskId completed}}`,
+        variables :{
+          input:newTask
+        }});
+      return res.data
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
@@ -52,7 +68,14 @@ export default function useTasks() {
   const { mutateAsync: onEdit } = useMutation<Task, Error, UpdateTaskParams>({
     mutationFn: async (updateTask) => {
       console.log(updateTask);
-      const res = await api.put<Task>("/api/tasks/update", updateTask);
+      const res = await api.post<Task>("/graphql",{
+        query: `mutation UpdateTask($update:UpdateTaskInput! ){
+        updateTask(update: $update){
+        title taskId completed}}`,
+        variables:{
+          update:updateTask
+        }
+      });
       return res.data;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
@@ -66,7 +89,14 @@ export default function useTasks() {
     DeleteTaskParams
   >({
     mutationFn: async ({ id }) => {
-      const res = await api.delete<ApiResponse>(`api/tasks/remove/${id}`);
+      const res = await api.post<ApiResponse>(`/graphql`,{
+        query:`mutation RemoveTask($id:ID!){
+        removeTask(id:$id){
+         title taskId completed}}`,
+         variables:{
+          id:id
+         }
+      });
       return res.data;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
@@ -79,8 +109,14 @@ export default function useTasks() {
     { previousTasks: Task[] | undefined }
   >({
     mutationFn: async ({ taskId, completed }) => {
-      const res = await api.patch<ApiResponse>(`api/tasks/mark/${taskId}`, {
-        completed,
+      const res = await api.post<ApiResponse>(`/graphql`, {
+        query:`mutation ToggleTask($id: ID!,$completed:Boolean!){
+        toggleTask(id:$id,completed:$completed){
+        taskId completed}}`,
+        variables:{
+          id:taskId,
+          completed:completed
+        }
       });
       return res.data;
     },

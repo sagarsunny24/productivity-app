@@ -39,8 +39,11 @@ export type AuthState = {
   setSearchQuery: (searchQuery: string) => void;
 };
 
-export type TasksResponse = Task[];
-
+export type TasksResponse = {
+  data :{
+   tasks: Task[];
+  }
+}
 export type DeleteTaskParams = { id: string };
 
 export interface ApiResponse {

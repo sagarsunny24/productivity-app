@@ -85,7 +85,7 @@ export default function App() {
         <Route element={<ProtectedLayout />}>
           <Route path="/dashboard" element={<AppLayout />}>
             <Route index element={<AllPage />} />
-            <Route path="/dashboard/upcoming" element={<UpcomingPage />} />
+            <Route path="/dashboard/upcoming" element={ <UpcomingPage />} />
             <Route path="/dashboard/today" element={<TodayPage />} />
             <Route path="/dashboard/completed" element={<CompletedPage/>} />
             <Route path="/dashboard/calendar" element={<Calendar />} />

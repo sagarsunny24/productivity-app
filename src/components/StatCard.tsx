@@ -44,13 +44,13 @@ const StatCard = ({
       }}
     >
 
-        <CardContent sx={{ p: 2, "&:last-child": { pb: 2 } }}>
+        <CardContent sx={{ p: 2 }}>
           <Stack direction="row" spacing={2} sx={{alignItems:'center', justifyContent:'space-between',mb:1.5}}>
             <Typography variant="caption"  sx={{
-               fontWeight: 600,
-              textTransform: "uppercase",
+          
+            
               letterSpacing: "0.05em",
-              color: "text.secondary",
+             
             }}>
               {title}
             </Typography>
